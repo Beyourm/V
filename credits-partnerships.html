@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الاعتمادات والشراكات </title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+/* ======================= ألوان وخطوط ======================= */
+:root {
+  --bg-light: #f0fdfa;
+  --primary-dark: #047857;
+  --accent-color: #14b8a6;
+  --text-color: #374151;
+}
+body {
+  font-family:'Cairo', sans-serif;
+  padding:25px;
+  background:var(--bg-light);
+  color:var(--text-color);
+  line-height:1.6;
+}
+h1 { color:var(--primary-dark); font-weight:800; margin-bottom:20px; }
+h2 { border-bottom:2px solid #a7f3d0; padding-bottom:5px; margin-bottom:25px; color:var(--primary-dark); font-weight:700; }
+
+/* ======================= تحريك عند التحميل (Fade-in on Scroll) ======================= */
+.section {
+  margin-bottom:40px;
+  opacity:0;
+  transform:translateY(20px);
+  transition:opacity 0.6s, transform 0.6s;
+}
+.section.visible { opacity:1; transform:translateY(0); }
+
+/* ======================= تصميم السلايدر ======================= */
+.slider-container {
+  position:relative;
+  overflow:hidden;
+  background:#fff;
+  padding:20px 0;
+  border-radius:12px;
+  box-shadow:0 6px 15px rgba(0,0,0,0.1);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:250px; /* ارتفاع مبدئي مناسب */
+}
+
+/* الشرائح */
+.slide {
+  position:absolute; /* الشرائح فوق بعضها */
+  top:0; left:0;
+  width:100%;
+  padding:20px;
+  text-align:center;
+  opacity:0;
+  transition:opacity 0.6s ease;
+  z-index:1;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+}
+.slide.active { opacity:1; z-index:2; }
+
+/* محتوى الشريحة */
+.slide img {
+  max-height:100px;
+  display:block;
+  margin:15px auto;
+  object-fit:contain;
+  filter:drop-shadow(0 2px 5px rgba(0,0,0,0.1));
+}
+.slide strong {
+  display:block;
+  font-size:1.15em;
+  color:var(--primary-dark);
+  margin-bottom:5px;
+  font-weight:700;
+}
+.link-btn {
+  display:inline-block;
+  background:var(--primary-dark);
+  color:#fff;
+  padding:8px 20px;
+  border-radius:6px;
+  text-decoration:none;
+  font-weight:700;
+  margin-top:15px;
+  margin-bottom:15px; /* تم التعديل: زيادة الهامش السفلي للزر ليترك مسافة قبل النقاط */
+  transition:0.3s;
+}
+.link-btn:hover { background:var(--accent-color); transform:translateY(-2px); }
+
+/* ======================= أزرار Prev/Next ======================= */
+
+.buttons {
+  position:absolute;
+  top:50%;
+  width:100%;
+  display:flex;
+  justify-content:space-between;
+  transform:translateY(-50%);
+  pointer-events:none; /* السماح بالضغط فقط على الأزرار نفسها */
+  /* تم التعديل: لضمان أن حاوية الأزرار فوق الشرائح المطلقة */
+  z-index: 15; 
+}
+.btn {
+  pointer-events:auto; /* تفعيل الضغط */
+  background:rgba(255,255,255,0.8);
+  color:var(--primary-dark);
+  border:none;
+  padding:10px 16px;
+  border-radius:50%;
+  cursor:pointer;
+  font-size:2rem;
+  z-index:10; /* قيمة Z-index هنا لم تعد مهمة مثل قيمة z-index للحاوية buttons */
+  transition:0.3s;
+  margin:0 5px;
+} /* <<< تم التصحيح: إضافة قوس الإغلاق المفقود هنا */
+.btn:hover { background:var(--accent-color); color:#fff; }
+
+/* ======================= مؤشرات الشرائح (Dots) ======================= */
+.dots-container-wrapper { /* تم التعديل: حاوية جديدة لـ dots-viewport لوضعها في مكان مناسب داخل الـ slide */
+  width: 100%;
+  /* تم التعديل: محاذاة الدوائر (النقاط) للوسط */
+  display: flex;
+  justify-content: center; 
+}
+.dots-viewport {
+  max-width:300px;
+  overflow:hidden;
+  margin:0 auto; /* تم التعديل: إزالة الهامش العلوي والسفلي الزائد */
+}
+.dots-container {
+  display:flex;
+  justify-content:center;
+  transition:transform 0.3s ease;
+}
+.dot {
+  height:12px; width:12px;
+  margin:0 6px;
+  background:#d1fae5;
+  border:2px solid var(--primary-dark);
+  border-radius:50%;
+  cursor:pointer;
+  transition:0.3s;
+}
+.dot.active { background:var(--primary-dark); transform:scale(1.1); }
+
+/* ======================= دعم الموبايل ======================= */
+@media (max-width:600px) {
+  body { padding:15px; }
+  .dots-viewport { max-width:200px; }
+}
+</style>
+</head>
+<body>
+
+<h1>الاعتمادات والشراكات</h1>
+<div id="content">جاري تحميل البيانات...</div>
+
+<script>
+/* ===================================== رابط جلب البيانات من Google Sheet ===================================== */
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbydb3HoWyuTJbYjJGbPjr_YsQqB9mPMBM-Em8WkPVSHuIq0oDcoZFwYeAgi68qPAS4d/exec";
+
+/* تخزين مؤشرات التوقيت لكل سلايدر */
+let timers = {};
+const MAX_DOTS = 5; // تم التعديل: عدد النقاط الأقصى المطلوب عرضه
+
+/* ===================================== تحميل البيانات وعرض السلايدر ===================================== */
+async function loadData() {
+  const contentDiv = document.getElementById('content');
+  try {
+    const resp = await fetch(WEB_APP_URL);
+    const data = await resp.json();
+
+    let html = '';
+    for(const section in data){
+      html += `<div class="section" data-section="${section}"><h2>${section}</h2>`;
+      if(data[section].length===0){ 
+        html += `<p>لا توجد بيانات بعد.</p>`; 
+      } else {
+        html += `<div class="slider-container" id="slider-${section}">`;
+        data[section].forEach((item,index)=>{
+          html += `<div class="slide${index===0?' active':''}" data-index="${index}">
+            ${item.ImageURL?`<img src="${item.ImageURL}" alt="${item.Title||''}">`:''}
+            <strong>${item.Title||''}</strong>
+            <p>${item.Description||''}</p>
+            ${item.LinkURL?`<a href="${item.LinkURL}" target="_blank" class="link-btn">زيارة الرابط</a>`:''}
+            
+            <div class="dots-container-wrapper"><div class="dots-viewport"><div class="dots-container"></div></div></div>
+            
+          </div>`;
+        });
+        // أزرار Prev/Next
+        html += `<div class="buttons">
+                  <button class="btn prev">‹</button>
+                  <button class="btn next">›</button>
+                 </div>`;
+        // تم حذف مؤشرات الشرائح من هنا بعد نقلها داخل الشريحة
+        html += `</div>`; // نهاية السلايدر
+      }
+      html += `</div>`; // نهاية القسم
+    }
+
+    contentDiv.innerHTML = html;
+
+    /* تفعيل السلايدر */
+    initSliders();
+
+    /* تفعيل الحركة عند التمرير */
+    initScrollAnimation();
+  } catch(err){
+    contentDiv.innerHTML = `<p style="color:red;">حدث خطأ أثناء جلب البيانات.</p>`;
+    console.error(err);
+  }
+}
+
+/* ===================================== تهيئة السلايدر ===================================== */
+function initSliders(){
+  document.querySelectorAll('.slider-container').forEach((container, sectionIndex)=>{
+    const slides = container.querySelectorAll('.slide');
+    const slideCount = slides.length;
+    
+    // تم التعديل: نحتاج لحاوية النقاط داخل كل شريحة الآن، بدلاً من حاوية السلايدر
+    const dotsContainers = container.querySelectorAll('.dots-container');
+    let index = 0;
+
+    /* إنشاء نقاط المؤشرات */
+    // تم التعديل: سيتم إنشاء النقاط داخل كل حاوية شرائح
+    dotsContainers.forEach(dotsContainer=>{
+        // تم التعديل: تحديد عدد النقاط بـ MAX_DOTS فقط
+        const dotsToShow = Math.min(slideCount, MAX_DOTS); 
+        
+        // إفراغ الحاوية قبل البناء (تحسباً لأي تكرار)
+        dotsContainer.innerHTML = ''; 
+        
+        // بناء النقاط
+        for(let i=0; i<dotsToShow; i++){
+            const dot = document.createElement('span');
+            dot.classList.add('dot');
+            if(i===0) dot.classList.add('active');
+            
+            // نحتاج إلى تخزين الـ index الفعلي المرتبط بالنقطة
+            dot.dataset.slideIndex = i; 
+            
+            dot.addEventListener('click', ()=>{
+                // تم التعديل: النقر على النقطة ينتقل إلى الشريحة المرتبطة بها
+                goToSlide(i); 
+                stopAutoSlide(); startAutoSlide();
+            });
+            dotsContainer.appendChild(dot);
+        }
+    });
+
+    /* دالة تحديث الشريحة */
+    const updateSlide = (newIndex)=>{
+      slides.forEach((s,i)=> s.classList.toggle('active', i===newIndex));
+      
+      // تم التعديل: تحديث النقاط النشطة (يجب تحديث النقاط في جميع الشرائح المرئية)
+      dotsContainers.forEach(dotsContainer=>{
+        // نحدد النقطة التي ستبقى نشطة بناءً على الحد الأقصى للنقاط (MAX_DOTS)
+        const activeDotIndex = newIndex % MAX_DOTS; 
+        
+        Array.from(dotsContainer.children).forEach((d,i)=> {
+            d.classList.toggle('active', i === activeDotIndex); 
+        });
+        
+        // نقل النقاط لضمان أن النقطة النشطة مرئية في نطاق الـ viewport
+        const offset = Math.max(0, activeDotIndex - 2); // 2 لجعل النقطة النشطة تقريباً في الوسط
+        dotsContainer.style.transform = `translateX(-${offset * 24}px)`; // 24 = (12px width + 12px margin)
+      });
+      
+      index = newIndex;
+    };
+
+    /* الانتقال إلى شريحة محددة */
+    const goToSlide = (newIndex)=>{ updateSlide((newIndex+slideCount)%slideCount); };
+
+    /* الشريحة التالية والسابقة */
+    const nextSlide = ()=> goToSlide(index+1);
+    const prevSlide = ()=> goToSlide(index-1);
+
+    /* تم التعديل: إصلاح ربط الأزرار لتشمل جميع السلايدرات. */
+    container.querySelector('.next').addEventListener('click', nextSlide);
+    container.querySelector('.prev').addEventListener('click', prevSlide);
+
+    /* التحكم في التغيير التلقائي */
+    const startAutoSlide = ()=>{ timers[sectionIndex]=setInterval(nextSlide,5000); };
+    const stopAutoSlide = ()=>{ clearInterval(timers[sectionIndex]); };
+    container.addEventListener('mouseenter', stopAutoSlide);
+    container.addEventListener('mouseleave', startAutoSlide);
+    startAutoSlide();
+
+    /* دعم السحب باللمس */
+    let startX=0, isDragging=false;
+    container.addEventListener('touchstart', e=>{ startX=e.touches[0].clientX; isDragging=true; stopAutoSlide(); });
+    container.addEventListener('touchmove', e=>{ if(!isDragging) return; });
+    container.addEventListener('touchend', e=>{
+      if(!isDragging) return;
+      const diff = e.changedTouches[0].clientX - startX;
+      if(diff > 50) prevSlide();
+      else if(diff < -50) nextSlide();
+      startAutoSlide();
+      isDragging=false;
+    });
+  });
+}
+
+
+
+/* ===================================== تأثير Fade-in عند التمرير ===================================== */
+function initScrollAnimation(){
+  const observer = new IntersectionObserver((entries,observer)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold:0.1 });
+  document.querySelectorAll('.section').forEach(s=>observer.observe(s));
+}
+
+/* ===================================== بدء التحميل ===================================== */
+loadData();
+</script>
+</body>
+</html>
