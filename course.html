@@ -215,6 +215,7 @@
         }
 
         try {
+const API_BASE_URL = 'https://script.google.com/macros/s/AKfycbw--BrncLUSp1qJRf7QOrqwKs33wivZppt9naOQBipbTM5KHwn0SyAqh_4dswTt47QVDw/exec';
             // جلب جميع الدورات من الـ API
             const apiUrl = `${API_BASE_URL}?action=courses`; 
             const response = await fetch(apiUrl);
