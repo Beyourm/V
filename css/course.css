@@ -277,5 +277,144 @@ footer {
 
 
 
+/* ---------------------------------------------- */
+/* 1. المتغيرات الأساسية والألوان والخطوط */
+/* ---------------------------------------------- */
+:root {
+  --primary-color: #011f4b;
+  --secondary-color: #fec107;
+  --accent-color: #5ad5b0;
+  --text-color: #212529;
+  --bg-color: #f8f9fa;
+  --max-width: 1200px;
+}
 
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; }
+body { background-color: var(--bg-color); color: var(--text-color); line-height: 1.6; }
+
+/* ---------------------------------------------- */
+/* 2. الحاويات العامة (Container) */
+/* ---------------------------------------------- */
+.container {
+  width: 90%;
+  max-width: var(--max-width);
+  margin: 20px auto;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  background-color: #fff;
+}
+
+/* ---------------------------------------------- */
+/* 3. الرأس (Header) */
+/* ---------------------------------------------- */
+header {
+  background: var(--primary-color);
+  color: #fff;
+  padding: 15px 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+header h1 { font-size: 26px; font-weight: 700; color: var(--secondary-color); }
+nav a {
+  color: #fff;
+  text-decoration: none;
+  margin-left: 20px;
+  font-weight: 600;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  position: relative;
+  padding-bottom: 5px;
+}
+nav a:hover { color: var(--accent-color); }
+nav a::after {
+  content: '';
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  background: var(--accent-color);
+  left: 0;
+  bottom: 0;
+  transition: width 0.3s ease-in-out;
+}
+nav a:hover::after { width: 100%; }
+
+/* ---------------------------------------------- */
+/* 4. قسم الأبطال (Hero Section) */
+/* ---------------------------------------------- */
+.hero {
+  background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+              url('https://images.unsplash.com/photo-1549414002-3c2b189736c4?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8fGVufDB8fHx8fA%3D%3D') center/cover no-repeat;
+  background-attachment: fixed;
+  text-align: center;
+  padding: 120px 20px 80px;
+  position: relative;
+  color: #fff;
+}
+.hero-text { background: rgba(1,31,75,0.8); padding: 30px; border-radius: 15px; box-shadow: 0 6px 20px rgba(0,0,0,0.4); max-width: 800px; margin: 0 auto; }
+.hero-text h2 { font-size: 32px; font-weight: 800; margin-bottom: 15px; color: var(--secondary-color); }
+.hero-text p { font-size: 18px; line-height: 1.8; }
+
+/* ---------------------------------------------- */
+/* 5. شريط التمرير المتحرك (Marquee) */
+/* ---------------------------------------------- */
+.marquee { background-color: var(--secondary-color); color: var(--primary-color); overflow: hidden; white-space: nowrap; padding: 10px 0; font-weight: bold; text-align: center; }
+.marquee span { display: inline-block; animation: marquee 20s linear infinite; }
+@keyframes marquee { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+
+/* ---------------------------------------------- */
+/* 6. الأزرار والروابط */
+/* ---------------------------------------------- */
+.btn { display: inline-block; padding: 12px 25px; background: var(--primary-color); color: #fff; text-decoration: none; border-radius: 8px; font-weight: 700; transition: transform 0.3s, box-shadow 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+.btn:hover { background: #003366; transform: translateY(-3px); box-shadow: 0 6px 15px rgba(0,0,0,0.25); }
+.btn-register { background: var(--accent-color); color: var(--primary-color); font-weight: 800; }
+.btn-register:hover { background: #44b694; }
+
+/* ---------------------------------------------- */
+/* 7. استجابة الشاشات (Media Queries) */
+/* ---------------------------------------------- */
+/* أجهزة الموبايل الصغيرة */
+@media (max-width: 600px) {
+    header { flex-direction: column; text-align: center; padding: 15px; }
+    header h1 { margin-bottom: 10px; font-size: 22px; }
+    nav { margin-top: 10px; width: 100%; display: flex; justify-content: center; flex-wrap: wrap; }
+    nav a { margin: 5px 10px; font-size: 14px; }
+
+    .hero { padding: 80px 15px 60px; }
+    .hero-text h2 { font-size: 24px; }
+    .hero-text p { font-size: 16px; }
+
+    .btn { padding: 10px 18px; font-size: 14px; }
+
+    .sticky-register-btn { right: 10px; padding: 12px 20px; font-size: 14px; bottom: 15px; }
+    .sticky-whatsapp-btn { left: 10px; width: 50px; height: 50px; bottom: 15px; }
+
+    .testimonial-text { font-size: 16px; }
+    .instructor-card img { width: 120px; height: 120px; }
+}
+
+/* أجهزة التابلت والمتوسطة */
+@media (min-width: 601px) and (max-width: 992px) {
+    header h1 { font-size: 24px; }
+    nav a { font-size: 15px; margin-left: 15px; }
+    .hero-text h2 { font-size: 28px; }
+    .hero-text p { font-size: 17px; }
+    .btn { padding: 11px 22px; font-size: 15px; }
+}
+
+/* أجهزة الكمبيوتر الكبيرة */
+@media (min-width: 993px) {
+    .container { width: 85%; }
+    header h1 { font-size: 28px; }
+    nav a { font-size: 16px; }
+    .hero-text h2 { font-size: 32px; }
+    .hero-text p { font-size: 18px; }
+    .btn { padding: 12px 25px; font-size: 16px; }
+}
 
