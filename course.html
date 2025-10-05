@@ -4,6 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="page-title">مؤسسة كن أنت - تفاصيل الدورة</title>
+    <meta property="og:title" content="مؤسسة كن أنت" />
+<meta property="og:description" content="نصنع قادة الغد من خلال المعرفة. استثمر في نفسك، واستثمر في مستقبلك." />
+<meta property="og:image" content="https://skliliia.netlify.app/images/photo.jpg" />
+<meta property="og:url" content="https://sklilia.netlify.app/index" />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="ar_AR" />
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="مؤسسة كن أنت">
+<meta name="twitter:description" content="نصنع قادة الغد من خلال المعرفة. استثمر في نفسك، واستثمر في مستقبلك.">
+<meta name="twitter:image" content="https://skliliia.netlify.app/images/photo.jpg">
+
     <meta name="description" content="سجل الآن في دورة الحفظ السريع للقرآن الكريم، تثبيت وحفظ بإتقان.">
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17515401485"></script>
@@ -17,6 +29,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/course.css"> 
+    <link rel="stylesheet" href="dark-mode.css"> 
+    	
 </head>
 <body>
 
@@ -27,6 +41,13 @@
         <a href="about/index.html">من نحن</a> 
         <a href="courses.html">الدورات</a>
         <a href="contact.html">تواصل معنا</a>
+        
+ <div class="toggle-container">
+<input type="checkbox" id="dark-mode-toggle"> 
+  <label for="dark-mode-toggle" class="switch"></label>
+</div> 
+ 
+ 
     </nav>
     <span id="status-indicator"></span>
 </header>
@@ -194,7 +215,6 @@
         }
 
         try {
- const API_BASE_URL = 'https://script.google.com/macros/s/AKfycbw--BrncLUSp1qJRf7QOrqwKs33wivZppt9naOQBipbTM5KHwn0SyAqh_4dswTt47QVDw/exec';
             // جلب جميع الدورات من الـ API
             const apiUrl = `${API_BASE_URL}?action=courses`; 
             const response = await fetch(apiUrl);
@@ -256,7 +276,6 @@
 
     document.addEventListener('DOMContentLoaded', loadCourseData);
 </script>
-
+<script src="Dark_Mode.js"></script>
 </body>
 </html>
- 
