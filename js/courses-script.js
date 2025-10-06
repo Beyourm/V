@@ -191,3 +191,6 @@ function createCourseButton(course) {
     // 5. استدعاء دالة تحميل الدورات عند بدء التشغيل
     loadCourses();
 });
+
+
+
