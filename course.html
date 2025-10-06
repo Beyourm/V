@@ -100,14 +100,13 @@
         <ul id="achievements-list" style="margin-top:20px; font-weight:bold; color:var(--primary-color); list-style:none; padding-right:0;"></ul>
     </div>
 
-        <div id="register-now-section" data-aos="fade-up" style="text-align: center; margin-top: 30px; padding: 25px 0;"> 
+    <div id="register-now-section" data-aos="fade-up" style="text-align: center; margin-top: 30px;">
         <h2>💡 لتبدأ رحلة النجاح، انقر هنا للتسجيل!</h2>
         <p>انضم إلينا الآن وانطلق نحو تحقيق أهدافك.</p>
         <a href="form.html" id="register-link" class="btn btn-register" style="margin-top: 20px;">
             اضغط هنا للتسجيل
         </a>
     </div>
-
   
 </div>
 
@@ -267,6 +266,9 @@ const API_BASE_URL = 'https://script.google.com/macros/s/AKfycbw--BrncLUSp1qJRf7
             // تشغيل السلايدرات
             window.startSliders(); 
             statusIndicator.innerHTML = '🟢';
+            
+            // ✅ التعديل الثاني: تحديث مكتبة التحريك AOS لمنع قفز التنسيق
+            AOS.refresh();
 
         } catch (err) {
             console.error('Error fetching course data:', err);
@@ -281,4 +283,3 @@ const API_BASE_URL = 'https://script.google.com/macros/s/AKfycbw--BrncLUSp1qJRf7
 <script src="Dark_Mode.js"></script>
 </body>
 </html>
-
