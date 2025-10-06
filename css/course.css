@@ -9,6 +9,7 @@
 }
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; }
 body { background-color: var(--bg-color); color: var(--text-color); line-height: 1.6; }
+overflow-x: hidden;
 .container { width: 90%; max-width: 900px; margin: 20px auto; padding: 25px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); background-color: #fff; }
 
 /* تصميم رأس الصفحة (Header) */
@@ -277,6 +278,8 @@ footer {
 
 
 
+
+
 /* ---------------------------------------------- */
 /* 1. المتغيرات الأساسية والألوان والخطوط */
 /* ---------------------------------------------- */
@@ -417,4 +420,3 @@ nav a:hover::after { width: 100%; }
     .hero-text p { font-size: 18px; }
     .btn { padding: 12px 25px; font-size: 16px; }
 }
-
